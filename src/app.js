@@ -11,6 +11,12 @@ app.use(cors({
 app.use(express.json({limit : "20kb"})) 
 app.use(urlencoded({extended: true, limit: "20kb"})) // allows data from HTML Form
 
+// importing and implement routes
+
+import userRouter from "./routes/user.route.js"
+// route declaration 
+
+app.use("/api/users", userRouter)
 
 export default app;
 

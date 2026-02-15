@@ -1,4 +1,4 @@
-class handleApiresponse{
+class handleApiResponse{
     constructor(statusCode, data, message = "Success"){
         this.statusCode = statusCode,
         this.data = data;
@@ -7,6 +7,6 @@ class handleApiresponse{
     }
 
 }
-export default handleApiresponse;
+export default handleApiResponse;
 
 // to handle API responses
