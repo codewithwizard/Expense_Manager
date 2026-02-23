@@ -1,7 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 
 const peopleSchema = new mongoose.Schema({
-    PeopleName : {
+    peopleId : {
+        type : Number,
+        required : true,
+        unique : true
+    },
+    peopleName : {
         type : String,
         required : true,
         unique : true
@@ -24,8 +29,7 @@ const peopleSchema = new mongoose.Schema({
         unique : true
     },
     userId : {
-        type : Schema.Types.ObjectId,
-        ref : "User"
+        type : Number
     },
     isActive : {
         type : Boolean,

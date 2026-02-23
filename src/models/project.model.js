@@ -1,30 +1,34 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const projectSchema = new mongoose.Schema({
-    ProjectName : {
+    projectId : {
+        type : Number,
+        required : true,
+        unique : true
+    },
+    projectName : {
         type : String,
         required : true,
         unique : true
     },
-    ProjectStartDate : {
+    projectStartDate : {
         type : Date,
         required : true
     },
-    ProjectEndDate : {
+    projectEndDate : {
         type : Date,
         required : true
     },
-    ProjectDetail : {
+    projectDetail : {
         type : String,
         required : true
     },
-    Description : {
+    description : {
         type : String,
         required : true
     },
     userId : {
-        type: Schema.Types.ObjectId,
-        ref : "User"
+        type: Number
     },
     isActive : {
         type : Boolean,

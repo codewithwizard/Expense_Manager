@@ -1,7 +1,7 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import handleApiError from "../utils/handleApiError.js";
 import handleApiResponse from "../utils/handleApiResponse.js";
-import {  User } from "../models/user.model.js";
+import { User } from "../models/user.model.js";
 
 const registerUser = asyncHandler( async (req, res) => {
     // step : 1 get data 
@@ -30,9 +30,14 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new handleApiError(400, "User with same username or email already exist")
     }
 
-    // step : 4 create User Object
+    // step : 4 Auto-increment userId
+    const lastUser = await User.findOne().sort({ userId: -1 });
+    const newUserId = lastUser ? lastUser.userId + 1 : 1;
+
+    // step : 5 create User Object
     
     const user = await User.create({
+        userId: newUserId,
         username,
         email,
         password,

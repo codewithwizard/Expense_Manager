@@ -4,9 +4,9 @@ dotenv.config();
 import connectDB from './db/index.js';
 import app from './app.js';
 
-app.get('/',(req,res) => {
-    res.send("Hello world")
-})
+// app.get('/',(req,res) => {
+//     res.send("Hello world")
+// })
 
 connectDB()
 .then( () => {

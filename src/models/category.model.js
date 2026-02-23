@@ -1,6 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const categorySchema = new mongoose.Schema({
+    categoryId : {
+        type : Number,
+        required : true,
+        unique : true
+    },
     categoryname: {
         type: String,
         required: true,
@@ -18,13 +23,12 @@ const categorySchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    Description: {
+    description: {
         type: String,
         required: true
     },
     userId: {
-        type: Schema.Types.ObjectId,
-        ref : "User"
+        type: Number
     }
 },
 {
