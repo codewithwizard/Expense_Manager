@@ -2,44 +2,41 @@ import { Schema } from "mongoose";
 import mongoose from "mongoose";
 
 const subCategorySchema = new mongoose.Schema({
-    subcategoryId : {
-        type : Number,
-        unique : true,
-        required : true
+    categoryId: {
+        type: Schema.Types.ObjectId,
+        ref: "Category",
+        required: true
     },
-    categoryId : {
-        type : Number,
-        required : true
+    subcategoryname: {
+        type: String,
+        required: true,
+        unique: true
     },
-    subcategoryname : {
-        type : String,
-        required : true,
-        unique : true
+    isExpense: {
+        type: Boolean,
+        default: false
     },
-    isExpense : {
-        type : Boolean,
-        default : false
+    isIncome: {
+        type: Boolean,
+        default: false
     },
-    isIncome : {
-        type : Boolean,
-        default : false
+    isActive: {
+        type: Boolean,
+        default: true
     },
-    isActive : {
-        type : Boolean,
-        default : true
+    description: {
+        type: String,
+        required: true
     },
-    description : {
-        type : String,
-        required : true
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
     },
-    userId : {
-        type : Number
-    },
-    sequence : {
-        type : Number
+    sequence: {
+        type: Number
     }
 }, {
-    timestamps : true
+    timestamps: true
 })
 
 export const Subcategory = mongoose.model("Subcategory", subCategorySchema)

@@ -30,14 +30,7 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new handleApiError(400, "User with same username or email already exist")
     }
 
-    // step : 4 Auto-increment userId
-    const lastUser = await User.findOne().sort({ userId: -1 });
-    const newUserId = lastUser ? lastUser.userId + 1 : 1;
-
-    // step : 5 create User Object
-    
     const user = await User.create({
-        userId: newUserId,
         username,
         email,
         password,
@@ -56,4 +49,36 @@ const registerUser = asyncHandler( async (req, res) => {
     )
 })
 
-export { registerUser }
+
+// login controller
+const loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        throw new handleApiError(400, "Email and password are required");
+    }
+
+    
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw new handleApiError(401, "Invalid");
+    }
+
+    const isMatch = await user.isPasswordCorrect(password);
+    if (!isMatch) {
+        throw new handleApiError(401, "Invalid");
+    }
+
+    
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+    
+    user.refreshToken = refreshToken;
+    await user.save();
+
+    return res.status(200).json(
+        new handleApiResponse(200, { accessToken, refreshToken }, "Login successful")
+    );
+});
+
+export { registerUser, loginUser }

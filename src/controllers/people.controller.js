@@ -11,12 +11,7 @@ const createPeople = asyncHandler(async (req, res) => {
         throw new handleApiError(400, "Name, email, password, mobile are required")
     }
 
-    const lastPeople = await People.findOne().sort({ peopleId: -1 })
-    const newPeopleId = lastPeople ? lastPeople.peopleId + 1 : 1;
-
-
     const people = await People.create({
-        peopleId: newPeopleId,
         peopleName,
         email,
         password,
@@ -52,7 +47,7 @@ const getAllPeoples = asyncHandler(async (req, res) => {
 const getById = asyncHandler(async (req, res) => {
     const { id } = req.params
 
-    const people = await People.findOne({peopleId: id});
+    const people = await People.findById(id);
 
     if (!people) {
         throw new handleApiError(500, "Something went wrong while fetching")
@@ -68,8 +63,8 @@ const updatePeople = asyncHandler(async (req, res) => {
     const { id } = req.params
     const { peopleName, email, password, mobile, userId, isActive } = req.body;
 
-    const people = await People.findOneAndUpdate(
-        {peopleId: id},
+    const people = await People.findByIdAndUpdate(
+        id,
         {
             peopleName,
             email,
@@ -93,7 +88,7 @@ const updatePeople = asyncHandler(async (req, res) => {
 const deletePeople = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    const people = await People.findOneAndDelete({peopleId: id});
+    const people = await People.findByIdAndDelete(id);
 
     if(!people){
         throw new handleApiError(500, "Something ")

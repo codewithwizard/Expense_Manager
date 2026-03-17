@@ -10,12 +10,7 @@ const createIncome = asyncHandler(async (req, res) => {
         throw new handleApiError(400, "amount, and userId are required");
     }
 
-    const lastIncome = await Income.findOne().sort({ incomeId: -1 })
-    const newIncomeId = lastIncome ? lastIncome.incomeId + 1 : 1
-    // if document exist then add +1 , if not then take 1
-
     const income = await Income.create({
-        incomeId: newIncomeId,
         incomeDate,
         categoryId,
         subcategoryId,
@@ -56,7 +51,7 @@ const getAllIncomes = asyncHandler(async (req, res) => {
 const getIncomeById = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    const income = await Income.findOne({incomeId: id});
+    const income = await Income.findById(id);
 
         if(!income){
             throw new handleApiError(404, "Income not fetched")
@@ -72,7 +67,7 @@ const updateIncome = asyncHandler(async (req, res) => {
         const { id } = req.params;
         const { incomeDate, categoryId, subcategoryId, peopleId, projectId, amount, incomeDetail, attachmentPath, description } = req.body;
 
-        const income = await Income.findOneAndUpdate({incomeId: id},
+        const income = await Income.findByIdAndUpdate(id,
             {
                 incomeDate,
                 categoryId,
@@ -101,7 +96,7 @@ const updateIncome = asyncHandler(async (req, res) => {
 const deleteIncome = asyncHandler(async (req,res) => {
     const { id } = req.params
 
-    const income = await Income.findOneAndDelete({incomeId: id});
+    const income = await Income.findByIdAndDelete(id);
 
     if(!income){
         throw new handleApiError(404, "Income not found")

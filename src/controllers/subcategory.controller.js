@@ -11,12 +11,7 @@ const createSubcategory = asyncHandler(async (req, res) => {
         throw new handleApiError(400, "subcategoryname, categoryId and description are required")
     }
 
-    // Auto-increment subcategoryId
-    const lastSubcategory = await Subcategory.findOne().sort({ subcategoryId: -1 });
-    const newSubcategoryId = lastSubcategory ? lastSubcategory.subcategoryId + 1 : 1;
-
     const subcategory = await Subcategory.create({
-        subcategoryId: newSubcategoryId,
         subcategoryname,    
         categoryId,
         isActive,
@@ -49,7 +44,7 @@ const getAllSubcategories = asyncHandler(async (req, res) => {
 // getByID subcategory
 const getById = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const subcategory = await Subcategory.findOne({subcategoryId: id});    
+    const subcategory = await Subcategory.findById(id);    
 
     if (!subcategory) {
         throw new handleApiError(404, "Subcategory not found")
@@ -66,7 +61,7 @@ const updateSubcategory = asyncHandler(async (req, res) => {
     const { subcategoryname, categoryId, isActive, description, userId } = req.body;
     
     const subcategory = await Subcategory
-        .findOneAndUpdate({subcategoryId: id}, {
+        .findByIdAndUpdate(id, {
             subcategoryname,
             categoryId,
             isActive,
@@ -86,7 +81,7 @@ const updateSubcategory = asyncHandler(async (req, res) => {
 // delete subcategory
 const deleteSubcategory = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const subcategory = await Subcategory.findOneAndDelete({subcategoryId: id});
+    const subcategory = await Subcategory.findByIdAndDelete(id);
     
     if (!subcategory) {
         throw new handleApiError(500, "Something went wrong while deleting subcategory")

@@ -1,45 +1,46 @@
 import mongoose, { Schema } from "mongoose";
 
 const expenseSchema = new mongoose.Schema({
-    expenseId : {
-        type : Number,
-        required : true,
-        unique : true
+    expenseDate: {
+        type: Date,
     },
-    expenseDate : {
-        type : Date,
+    categoryId: {
+        type: Schema.Types.ObjectId,
+        ref: "Category"
     },
-    categoryId : {
-        type : Number
+    subcategoryId: {
+        type: Schema.Types.ObjectId,
+        ref: "Subcategory"
     },
-    subcategoryId : {
-        type : Number
+    peopleId: {
+        type: Schema.Types.ObjectId,
+        ref: "People"
     },
-    peopleId : {
-        type : Number
+    projectId: {
+        type: Schema.Types.ObjectId,
+        ref: "Project"
     },
-    projectId : {
-        type : Number
+    amount: {
+        type: Number,
+        required: true
     },
-    amount : {
-        type : Number,
-        required : true
+    expenseDetail: {
+        type: String
     },
-    expenseDetail : {
-        type : String
+    attachmentPath: {
+        type: String
     },
-    attachmentPath : {
-        type : String
+    description: {
+        type: String
     },
-    description : {
-        type : String
-    },
-    userId : {
-        type : Number
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }
 
-},{
-    timestaps : true
+},
+{
+    timestamps: true
 }) 
 
 export const Expense = mongoose.model("Expense",expenseSchema)

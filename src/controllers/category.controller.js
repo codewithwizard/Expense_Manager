@@ -12,12 +12,7 @@ const createCategory = asyncHandler(async (req, res) => {
         throw new handleApiError(400, "categoryname and description are required")
     }
 
-    // Auto-increment categoryId
-    const lastCategory = await Category.findOne().sort({ categoryId: -1 });
-    const newCategoryId = lastCategory ? lastCategory.categoryId + 1 : 1;
-
     const category = await Category.create({
-        categoryId: newCategoryId,
         categoryname,
         isExpense,
         isIncome,
@@ -53,7 +48,7 @@ const getAllCategories = asyncHandler(async (req, res) => {
 // getByID category
 const getById = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const category = await Category.findOne({categoryId: id});
+    const category = await Category.findById(id);
 
     if (!category) {
         throw new handleApiError(404, "Category not found")
@@ -71,8 +66,8 @@ const updateCategory = asyncHandler(async (req, res) => {
     const { id } = req.params
     const { categoryname, isExpense, isIncome, isActive, description, userId } = req.body;  
 
-    const category = await Category.findOneAndUpdate(
-        {categoryId: id},
+    const category = await Category.findByIdAndUpdate(
+        id,
         {
             categoryname,
             isExpense,
@@ -96,7 +91,7 @@ const updateCategory = asyncHandler(async (req, res) => {
 // delete category
 const deleteCategory = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const category = await Category.findOneAndDelete({categoryId: id});
+    const category = await Category.findByIdAndDelete(id);
     
     if (!category) {
         throw new handleApiError(500, "Something went wrong while deleting category")

@@ -1,11 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
 const categorySchema = new mongoose.Schema({
-    categoryId : {
-        type : Number,
-        required : true,
-        unique : true
-    },
     categoryname: {
         type: String,
         required: true,
@@ -28,11 +23,12 @@ const categorySchema = new mongoose.Schema({
         required: true
     },
     userId: {
-        type: Number
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }
 },
 {
-    timestamps : true
+    timestamps: true
 })
 
 export const Category = mongoose.model("Category", categorySchema);

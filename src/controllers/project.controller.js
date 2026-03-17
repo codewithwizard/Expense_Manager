@@ -5,23 +5,19 @@ import handleApiResponse from "../utils/handleApiResponse.js";
 
 //create project
 const createProject = asyncHandler(async (req, res) => {
-    const { projectName, startDate, endDate, isActive, description, userId } = req.body;
+    const { projectName, projectStartDate, projectEndDate, isActive, description, projectDetail, userId } = req.body;
 
-    if (!projectName || !startDate || !endDate || !description) {
-        throw new handleApiError(400, "projectName, startDate, endDate and description are required")
+    if (!projectName || !projectStartDate || !projectEndDate || !description) {
+        throw new handleApiError(400, "projectName, projectStartDate, endDate and description are required")
     }
 
-    // Auto-increment projectId
-    const lastProject = await Project.findOne().sort({ projectId: -1 });
-    const newProjectId = lastProject ? lastProject.projectId + 1 : 1;
-
     const project = await Project.create({
-        projectId: newProjectId,
         projectName,
-        startDate,
-        endDate,
+        projectStartDate,
+        projectEndDate,
         isActive,
         description,
+        projectDetail,
         userId
     })
 
@@ -50,7 +46,7 @@ const getAllProjects = asyncHandler(async (req, res) => {
 // getByID project
 const getById = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const project = await Project.findOne({projectId: id});
+    const project = await Project.findById(id);
         
 
     if (!project) {
@@ -65,14 +61,15 @@ const getById = asyncHandler(async (req, res) => {
 // update project
 const updateProject = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const { projectName, startDate, endDate, isActive, description } = req.body;    
+    const { projectName, projectStartDate, projectEndDate, isActive,projectDetail, description } = req.body;    
 
-    const project = await Project.findOneAndUpdate({projectId: id}, {
+    const project = await Project.findByIdAndUpdate(id, {
         projectName,
-        startDate,
-        endDate,
+        projectStartDate,
+        projectEndDate,
         isActive,
-        description
+        description,
+        projectDetail
     }, { new: true })
     
     if (!project) {
@@ -87,7 +84,7 @@ const updateProject = asyncHandler(async (req, res) => {
 // delete project
 const deleteProject = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const project = await Project.findOneAndDelete({projectId: id})
+    const project = await Project.findByIdAndDelete(id)
 
     if (!project) {
         throw new handleApiError(404, "Project not found")

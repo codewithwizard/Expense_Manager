@@ -1,29 +1,28 @@
 import mongoose, { Schema } from "mongoose";
 
 const incomeSchema = new mongoose.Schema({
-    incomeId : {
-        type : Number,
-        required : true,
-        unique : true
+    incomeDate: {
+        type: Date,
     },
-    incomeDate : {
-        type : Date,
+    categoryId: {
+        type: Schema.Types.ObjectId,
+        ref: "Category"
     },
-    categoryId : {
-        type : Number
+    subcategoryId: {
+        type: Schema.Types.ObjectId,
+        ref: "Subcategory"
     },
-    subcategoryId : {
-        type : Number
+    peopleId: {
+        type: Schema.Types.ObjectId,
+        ref: "People"
     },
-    peopleId : {
-        type : Number
+    projectId: {
+        type: Schema.Types.ObjectId,
+        ref: "Project"
     },
-    projectId : {
-        type : Number
-    },
-    amount : {
-        type : Number,
-        required : true
+    amount: {
+        type: Number,
+        required: true
     },
     incomeDetail : {
         type : String
@@ -34,12 +33,13 @@ const incomeSchema = new mongoose.Schema({
     description : {
         type : String
     },
-    userId : {
-        type : Number
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }
 
 },{
-    timestamps : true
+    timestamps: true
 }) 
 
 export const Income = mongoose.model("Income", incomeSchema)

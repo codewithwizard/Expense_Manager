@@ -12,12 +12,7 @@ const createExpense = asyncHandler(async (req, res) => {
         throw new handleApiError(400, "amount and userId are required");
     }
 
-    // Auto-increment expenseId
-    const lastExpense = await Expense.findOne().sort({ expenseId: -1 });
-    const newExpenseId = lastExpense ? lastExpense.expenseId + 1 : 1;
-
     const expense = await Expense.create({
-        expenseId: newExpenseId,
         expenseDate,
         categoryId,
         subcategoryId,
@@ -56,7 +51,7 @@ const getAllExpenses = asyncHandler(async (req, res) => {
 const getExpenseById = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    const expense = await Expense.findOne({expenseId: id});
+    const expense = await Expense.findById(id);
 
     if (!expense) {
         throw new handleApiError(404, "Expense not found");
@@ -72,8 +67,8 @@ const updateExpense = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { expenseDate, categoryId, subcategoryId, peopleId, projectId, amount, expenseDetail, attachmentPath, description } = req.body;
 
-    const expense = await Expense.findOneAndUpdate(
-        {expenseId: id},
+    const expense = await Expense.findByIdAndUpdate(
+        id,
         {
             expenseDate,
             categoryId,
@@ -101,7 +96,7 @@ const updateExpense = asyncHandler(async (req, res) => {
 const deleteExpense = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    const expense = await Expense.findOneAndDelete({expenseId: id});
+    const expense = await Expense.findByIdAndDelete(id);
 
     if (!expense) {
         throw new handleApiError(404, "Expense not found");
